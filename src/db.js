@@ -2,7 +2,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl:false
+  ssl: false,
 });
 (async () => {
   try {
@@ -12,4 +12,3 @@ export const pool = new Pool({
     console.error(error.message);
   }
 })();
-//
