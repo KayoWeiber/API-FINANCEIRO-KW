@@ -9,7 +9,6 @@ import formasPagamentoRouter from "./routes/formasPagamento.js";
 import gastosVariaveisRouter from "./routes/gastosVariaveis.js";
 import entradasRouter from "./routes/entradas.js";
 
-
 const app = express();
 
 app.use(cors());
@@ -22,17 +21,10 @@ app.use("/gastos-variaveis", gastosVariaveisRouter);
 app.use("/entradas", entradasRouter);
 
 app.get("/", (req, res) => {
-    res.send("API Financeira Online");
-});
-app.listen(process.env.PORT, () => {
-    console.log("Servidor rodando na porta " + process.env.PORT);
+  res.send("API Financeira Online");
 });
 
-
-
-
-
-
-
-
-// CRUD routes moved to dedicated router files under ./routes
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log("Servidor rodando na porta " + port);
+});
