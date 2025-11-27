@@ -1,0 +1,30 @@
+# Dependências
+/node_modules
+/package-lock.json
+
+# Variáveis de ambiente
+.env
+.env.*
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Diretórios de build/dist
+/dist
+/build
+/coverage
+/tmp
+
+# Arquivos de IDEs (Opcional, mas recomendado)
+# VSCode
+.vscode/
+
+# Se você estiver usando TypeScript
+*.tsbuildinfo
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
