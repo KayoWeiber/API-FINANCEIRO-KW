@@ -16,7 +16,7 @@ Esta documentação descreve como configurar o projeto localmente e todos os end
 - `Node.js` + `Express`
 - `pg` (driver PostgreSQL)
 - `dotenv` (variáveis de ambiente)
-- `cors`
+- `cors`, `helmet`, `compression`, `morgan`, `express-rate-limit`
 
 ## Requisitos
 
@@ -49,6 +49,17 @@ npm start
 ```
 
 O servidor sobe na porta definida em `PORT`.
+
+### Middlewares configurados
+
+- Segurança: `helmet()`
+- CORS: `cors()`
+- Compactação: `compression()`
+- Logs HTTP: `morgan('dev'|'combined')` conforme `NODE_ENV`
+- Limite de requisições: `express-rate-limit` (janela 15min, `RATE_LIMIT_MAX` padrão 300)
+- JSON body: `express.json({ limit: '1mb' })`
+- 404: retorna `{ error: "Not Found", path }`
+- Erros: handler centralizado (em produção, resposta genérica 500)
 
 ## Convenções
 
