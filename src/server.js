@@ -13,6 +13,7 @@ import formasPagamentoRouter from "./routes/formasPagamento.js";
 import gastosVariaveisRouter from "./routes/gastosVariaveis.js";
 import gastosFixosRouter from "./routes/gastosFixos.js";
 import entradasRouter from "./routes/entradas.js";
+import resumoRouter from "./routes/resumo.js";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use("/formas-pagamento", formasPagamentoRouter);
 app.use("/gastos-variaveis", gastosVariaveisRouter);
 app.use("/gastos-fixos", gastosFixosRouter);
 app.use("/entradas", entradasRouter);
+app.use("/resumo", resumoRouter);
 
 app.get("/", (req, res) => {
   res.send("API Financeira Online");

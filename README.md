@@ -163,7 +163,6 @@ curl -X POST http://localhost:3000/entradas \
 - DELETE `/gastos-variaveis/:id`
 	- Soft-delete. 204.
 
-### Investimentos
 ### Gastos Fixos
 
 - POST `/gastos-fixos`
@@ -190,18 +189,67 @@ curl -X PATCH http://localhost:3000/gastos-fixos/<id> \
   -d '{"campo":"pago","valor":true}'
 ```
 
+### Investimentos
+
 - POST `/investimentos`
 	- Body: `{ "user_id": number, "competencia_id": number, "data": string, "descricao": string, "valor": number }`
 
 - GET `/investimentos/:competencia_id`
 	- Lista investimentos da competência (somente `deleted=''`).
 
+- PATCH `/investimentos/:id`
+	- Body: `{ "campo": string, "valor": any }` onde `campo ∈ { data, descricao, valor }`
+
+- DELETE `/investimentos/:id`
+	- Soft-delete. 204.
+
 Exemplo:
 
 ```powershell
-curl -X POST http://localhost:3000/investimentos \
+curl -X PATCH http://localhost:3000/investimentos/<id> \
 	-H "Content-Type: application/json" \
-	-d '{"user_id":1,"competencia_id":10,"data":"2025-11-02","descricao":"Tesouro","valor":200}'
+	-d '{"campo":"valor","valor":350.00}'
+```
+
+### Resumo Financeiro
+
+- GET `/resumo/:user_id/:competencia_id`
+	- Agrega: entradas (por `tipo_renda`), despesas variáveis e fixas (por categoria e forma de pagamento), investimentos (total) e totais combinados por forma de pagamento.
+
+Campos principais:
+- `entradas.total`: soma de todas as entradas
+- `entradas.por_tipo[]`: cada tipo de renda com seu total
+- `despesas.variaveis.por_categoria[]` / `despesas.fixas.por_categoria[]`
+- `despesas.variaveis.por_forma_pagamento[]` / `despesas.fixas.por_forma_pagamento[]`
+- `formas_pagamento_total[]`: total combinado (fixos + variáveis) por forma de pagamento
+
+Resposta exemplo (reduzida):
+```json
+{
+	"competencia_id": "10",
+	"user_id": "1",
+	"entradas": {
+		"total": 5000.00,
+		"por_tipo": [ { "tipo_renda": "salario", "total": 5000.00 } ]
+	},
+	"despesas": {
+		"variaveis": {
+			"total": 1200.50,
+			"por_categoria": [ { "categoria_id": "abc", "nome": "Mercado", "total": 800.00 } ],
+			"por_forma_pagamento": [ { "forma_pagamento_id": "fp1", "tipo": "Cartão", "total": 950.00 } ]
+		},
+		"fixas": {
+			"total": 300.00,
+			"por_categoria": [ { "categoria_id": "def", "nome": "Assinaturas", "total": 300.00 } ],
+			"por_forma_pagamento": [ { "forma_pagamento_id": "fp2", "tipo": "Débito", "total": 300.00 } ]
+		}
+	},
+	"investimentos": { "total": 350.00 },
+	"formas_pagamento_total": [
+		{ "forma_pagamento_id": "fp1", "tipo": "Cartão", "total": 950.00 },
+		{ "forma_pagamento_id": "fp2", "tipo": "Débito", "total": 300.00 }
+	]
+}
 ```
 
 ## Erros e Códigos de Status
