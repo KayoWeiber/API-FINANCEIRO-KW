@@ -164,6 +164,31 @@ curl -X POST http://localhost:3000/entradas \
 	- Soft-delete. 204.
 
 ### Investimentos
+### Gastos Fixos
+
+- POST `/gastos-fixos`
+	- Body: `{ "user_id": uuid, "competencia_id": uuid, "categoria_id": uuid, "forma_pagamento_id": uuid, "data": "YYYY-MM-DD"|null, "descricao": string|null, "valor": number, "pago": boolean? }`
+
+- GET `/gastos-fixos/:competencia_id`
+	- Lista gastos fixos da competência (somente `deleted=''`). Ordena por data / descrição.
+
+- PATCH `/gastos-fixos/:id`
+	- Body dinâmico: `{ "campo": string, "valor": any }` onde `campo ∈ { data, descricao, valor, pago, categoria_id, forma_pagamento_id }`
+
+- DELETE `/gastos-fixos/:id`
+	- Soft-delete. 204.
+
+Exemplos:
+
+```powershell
+curl -X POST http://localhost:3000/gastos-fixos \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":"<uuid>","competencia_id":"<uuid>","categoria_id":"<uuid>","forma_pagamento_id":"<uuid>","data":"2025-11-10","descricao":"Assinatura","valor":49.90,"pago":false}'
+
+curl -X PATCH http://localhost:3000/gastos-fixos/<id> \
+  -H "Content-Type: application/json" \
+  -d '{"campo":"pago","valor":true}'
+```
 
 - POST `/investimentos`
 	- Body: `{ "user_id": number, "competencia_id": number, "data": string, "descricao": string, "valor": number }`
