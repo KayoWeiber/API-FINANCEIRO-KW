@@ -23,7 +23,25 @@ router.get("/:user_id", async (req, res) => {
   );
   res.json(rows);
 });
-
+router.patch("/ativar", async (req, res) => {
+  const { user_id, ano, mes, ativa } = req.body;
+  if (!user_id || !ano || !mes) {
+    return res.status(400).json({ error: "Informe user_id, ano e mes" });
+  }
+  const flag = typeof ativa === 'boolean' ? ativa : true;
+  try {
+    const { rows } = await pool.query(
+      `update competencias
+       set ativa=$4
+       where user_id=$1 and ano=$2 and mes=$3 and deleted='' returning *`,
+      [user_id, ano, mes, flag]
+    );
+    if (!rows.length) return res.status(404).json({ error: "Competência não encontrada" });
+    res.json(rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
   const { ativa } = req.body;
@@ -42,5 +60,7 @@ router.delete("/:id", async (req, res) => {
   );
   res.sendStatus(204);
 });
+
+
 
 export default router;

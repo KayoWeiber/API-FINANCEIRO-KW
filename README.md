@@ -111,6 +111,18 @@ curl http://localhost:3000/categorias/1
 - DELETE `/competencias/:id`
 	- Soft-delete. 204.
 
+- PATCH `/competencias/ativar`
+	- Body: `{ "user_id": string, "ano": number, "mes": number, "ativa"?: boolean }`
+	- Define a competência como ativa (padrão `true`) para o usuário/ano/mês informados. Retorna o registro atualizado.
+
+Exemplo:
+
+```powershell
+curl -X PATCH http://localhost:3000/competencias/ativar \
+  -H "Content-Type: application/json" \
+  -d '{"user_id":"bace300c-294b-488f-91d4-1088590ff08a","ano":2025,"mes":11}'
+```
+
 Exemplo:
 
 ```powershell
