@@ -14,6 +14,7 @@ import gastosVariaveisRouter from "./routes/gastosVariaveis.js";
 import gastosFixosRouter from "./routes/gastosFixos.js";
 import entradasRouter from "./routes/entradas.js";
 import resumoRouter from "./routes/resumo.js";
+import metasInvestimentosRouter from "./routes/metasInvestimentos.js";
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.use(express.json({ limit: '1mb' }));
 // Rate limiting básico
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: Number(process.env.RATE_LIMIT_MAX || 300),
+  max: Number(process.env.RATE_LIMIT_MAX || 1000),
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -45,6 +46,7 @@ app.use("/gastos-variaveis", gastosVariaveisRouter);
 app.use("/gastos-fixos", gastosFixosRouter);
 app.use("/entradas", entradasRouter);
 app.use("/resumo", resumoRouter);
+app.use("/metas-investimentos", metasInvestimentosRouter);
 
 app.get("/", (req, res) => {
   res.send("API Financeira Online");
